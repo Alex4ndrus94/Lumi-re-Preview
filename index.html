@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cinema Multisala Lumière — Anteprima</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --noir:#141212;
+    --panel:#1E1A1A;
+    --panel-2:#241E1E;
+    --maroon:#8B3232;
+    --maroon-bright:#A9403A;
+    --gold:#E2726C;
+    --cream:#F3E9DD;
+    --muted:#9C8F86;
+    --line: rgba(243,233,221,0.12);
+    --radius: 2px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--noir);
+    color:var(--cream);
+    font-family:'Work Sans', sans-serif;
+    font-weight:400;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  ul{list-style:none;}
+
+  .eyebrow{
+    font-family:'Bebas Neue', sans-serif;
+    letter-spacing:0.28em;
+    font-size:0.78rem;
+    color:var(--gold);
+    text-transform:uppercase;
+  }
+  h1,h2,h3{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600;
+    letter-spacing:0.01em;
+  }
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  .demo-note{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.7rem;
+    color:var(--gold);
+    border:1px solid var(--gold);
+    padding:2px 8px;
+    border-radius:var(--radius);
+    display:inline-block;
+  }
+
+  /* ---------- Marquee light strip (signature divider) ---------- */
+  .lightstrip{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    padding:14px 0;
+  }
+  .lightstrip span{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--gold);
+    box-shadow:0 0 6px 1px rgba(226,114,108,0.6);
+    animation: bulbpulse 2.6s ease-in-out infinite;
+  }
+  .lightstrip span:nth-child(odd){ background:var(--maroon-bright); box-shadow:0 0 6px 1px rgba(169,64,58,0.6); animation-delay:1.3s;}
+  @keyframes bulbpulse{
+    0%, 100%{ opacity:0.35; }
+    50%{ opacity:1; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .lightstrip span{ animation:none; opacity:0.75; }
+  }
+
+  /* ---------- Header (Starplex-style: logo left, horizontal nav w/ dropdowns) ---------- */
+  header{
+    position:sticky; top:0; z-index:60;
+    background:linear-gradient(180deg, #7A2C2C 0%, var(--maroon) 100%);
+    border-bottom:1px solid rgba(0,0,0,0.25);
+  }
+  header .brand-name{ color:var(--cream); }
+  header nav.main-nav > ul > li > a{ color:rgba(243,233,221,0.85); }
+  header nav.main-nav > ul > li:hover > a{ color:#fff; }
+  .header-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 20px;
+    max-width:1200px; margin:0 auto;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .brand img{ width:40px; height:40px; border-radius:50%; }
+  .brand-name{
+    font-family:'Cormorant Garamond', serif;
+    font-size:1.1rem;
+    letter-spacing:0.02em;
+    font-style:italic;
+  }
+  nav.main-nav ul{ display:flex; gap:4px; }
+  nav.main-nav > ul > li{ position:relative; }
+  nav.main-nav > ul > li > a{
+    display:block;
+    font-family:'Bebas Neue', sans-serif;
+    font-size:0.82rem;
+    letter-spacing:0.12em;
+    color:var(--muted);
+    padding:10px 12px;
+  }
+  nav.main-nav > ul > li:hover > a, nav.main-nav > ul > li > a:focus-visible{ color:var(--gold); }
+  .submenu{
+    position:absolute; top:100%; left:0; min-width:190px;
+    background:var(--panel); border:1px solid var(--line);
+    display:none; flex-direction:column; padding:6px 0;
+  }
+  nav.main-nav > ul > li:hover .submenu{ display:flex; }
+  .submenu li a{
+    display:block; padding:9px 14px;
+    font-family:'Work Sans', sans-serif; letter-spacing:0; font-size:0.85rem; color:var(--muted);
+  }
+  .submenu li a:hover{ color:var(--gold); background:rgba(226,114,108,0.08); }
+  .nav-toggle{ display:none; background:none; border:none; color:var(--cream); font-size:1.4rem; }
+
+  @media (max-width:860px){
+    nav.main-nav{
+      position:fixed; inset:62px 0 auto 0;
+      background:var(--panel);
+      border-bottom:1px solid var(--line);
+      transform:translateY(-120%);
+      transition:transform 0.3s ease;
+      max-height:80vh; overflow-y:auto;
+    }
+    nav.main-nav.open{ transform:translateY(0); }
+    nav.main-nav ul{ flex-direction:column; gap:0; }
+    nav.main-nav > ul > li{ border-bottom:1px solid var(--line); }
+    nav.main-nav > ul > li > a{ padding:14px 20px; }
+    .submenu{ position:static; border:none; display:flex; background:var(--panel-2); }
+    .submenu li a{ padding:10px 34px; }
+    .nav-toggle{ display:block; }
+  }
+
+  /* ---------- Hero slider ---------- */
+  .slider{
+    position:relative;
+    height:min(72vw, 420px);
+    min-height:260px;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  .slide{
+    position:absolute; inset:0;
+    display:flex; align-items:flex-end;
+    padding:32px 20px;
+    opacity:0;
+    transition:opacity 1s ease;
+  }
+  .slide.active{ opacity:1; }
+  .slide-bg{
+    position:absolute; inset:0; z-index:0;
+  }
+  .slide:nth-child(1) .slide-bg{ background:radial-gradient(ellipse at 30% 20%, rgba(139,50,50,0.55), transparent 60%), linear-gradient(160deg,#241D1D,#0d0a0a); }
+  .slide:nth-child(2) .slide-bg{ background:radial-gradient(ellipse at 70% 10%, rgba(226,114,108,0.22), transparent 55%), linear-gradient(160deg,#221a1a,#0d0a0a); }
+  .slide:nth-child(3) .slide-bg{ background:radial-gradient(ellipse at 50% 0%, rgba(139,50,50,0.4), transparent 60%), linear-gradient(160deg,#241a1a,#0d0a0a); }
+  .slide-content{ position:relative; z-index:1; max-width:640px; }
+  .slide-content .eyebrow{ display:block; margin-bottom:8px; }
+  .slide-content h1{ font-size:clamp(1.9rem,5vw,3rem); font-style:italic; margin-bottom:10px; }
+  .slide-content p{ color:var(--muted); max-width:48ch; margin-bottom:16px; font-size:0.94rem; }
+  .slider-dots{
+    position:absolute; bottom:14px; right:20px; z-index:2;
+    display:flex; gap:8px;
+  }
+  .slider-dots button{
+    width:8px; height:8px; border-radius:50%; border:1px solid var(--gold);
+    background:transparent; padding:0; cursor:pointer;
+  }
+  .slider-dots button.active{ background:var(--gold); }
+
+  .btn{
+    display:inline-block;
+    font-family:'Bebas Neue', sans-serif;
+    letter-spacing:0.14em;
+    font-size:0.88rem;
+    padding:12px 24px;
+    background:var(--maroon);
+    color:var(--cream);
+    border:1px solid var(--maroon-bright);
+    border-radius:var(--radius);
+    transition:background 0.2s ease, transform 0.15s ease;
+  }
+  .btn:hover{ background:var(--maroon-bright); transform:translateY(-1px); }
+  .btn:focus-visible, a:focus-visible, button:focus-visible{
+    outline:2px solid var(--gold); outline-offset:3px;
+  }
+  .btn-ghost{
+    background:transparent; border:1px solid var(--line); color:var(--cream);
+    margin-left:8px;
+  }
+  .btn-ghost:hover{ border-color:var(--gold); color:var(--gold); background:transparent; }
+
+  /* ---------- Section shell ---------- */
+  section.block{ padding:40px 20px; max-width:1200px; margin:0 auto; }
+  .block-head{ display:flex; align-items:baseline; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:8px;}
+  .block-head h2{ font-size:1.7rem; font-style:italic; }
+
+  /* ---------- Programmazione: lista testuale (riga per film) ---------- */
+  .programma-list{ display:flex; flex-direction:column; border-top:1px solid var(--line); }
+  .programma-row{
+    padding:16px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .programma-info h3{ font-size:1.15rem; font-style:italic; margin-bottom:2px; }
+  .programma-info .tags{ font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--muted); margin-bottom:8px; }
+  .programma-times{ display:flex; flex-wrap:wrap; gap:6px 16px; }
+  .programma-times .slot{
+    font-family:'IBM Plex Mono', monospace; font-size:0.82rem;
+    display:flex; gap:6px; align-items:baseline;
+  }
+  .programma-times .slot .time{ color:var(--cream); }
+  .programma-times .slot .price{ color:var(--gold); }
+
+  /* ---------- Day selector ("SCEGLI IL TUO GIORNO") ---------- */
+  .day-select-band{
+    background:var(--panel);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:24px 20px;
+  }
+  .day-select-band .block-head{ margin-bottom:14px; max-width:1200px; margin-left:auto; margin-right:auto;}
+  .day-strip{
+    display:flex; gap:8px; overflow-x:auto; padding-bottom:4px;
+    max-width:1200px; margin:0 auto;
+    scrollbar-width:none;
+  }
+  .day-strip::-webkit-scrollbar{ display:none; }
+  .day-tab{
+    flex:0 0 auto;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.8rem;
+    padding:10px 16px;
+    border:1px solid var(--line);
+    background:var(--noir);
+    color:var(--muted);
+    white-space:nowrap;
+    border-radius:var(--radius);
+  }
+  .day-tab.active{ background:var(--maroon); color:var(--cream); border-color:var(--maroon-bright); }
+
+  /* ---------- CTA band (prenota / newsletter) ---------- */
+  .cta-band{
+    display:flex; flex-wrap:wrap; gap:14px; justify-content:center;
+    padding:30px 20px;
+    text-align:center;
+  }
+
+  /* ---------- Map ---------- */
+  .map-wrap{
+    border:1px solid var(--line);
+    aspect-ratio:16/7;
+    background:var(--panel);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--muted);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.8rem;
+    text-align:center;
+    padding:20px;
+  }
+
+  /* ---------- News ---------- */
+  .news-list{ display:flex; flex-direction:column; border-top:1px solid var(--line); }
+  .news-item{
+    display:flex; gap:18px; padding:16px 0; border-bottom:1px solid var(--line);
+    align-items:baseline; flex-wrap:wrap;
+  }
+  .news-date{ font-family:'IBM Plex Mono', monospace; font-size:0.76rem; color:var(--gold); width:80px; flex:0 0 auto;}
+  .news-title{ font-family:'Cormorant Garamond', serif; font-style:italic; font-size:1.1rem; }
+  .news-copy{ color:var(--muted); font-size:0.86rem; flex-basis:100%; }
+
+  /* ---------- App download ---------- */
+  .app-band{ text-align:center; padding:34px 20px; }
+  .app-badges{ display:flex; gap:12px; justify-content:center; margin-top:14px; flex-wrap:wrap; }
+  .app-badge{
+    border:1px solid var(--line); padding:9px 16px; font-family:'IBM Plex Mono', monospace;
+    font-size:0.76rem; color:var(--muted); border-radius:var(--radius);
+  }
+  .app-badge:hover{ border-color:var(--gold); color:var(--gold); }
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding:36px 20px 20px;
+    background:var(--panel-2);
+  }
+  .footer-inner{
+    max-width:1200px; margin:0 auto;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:24px;
+  }
+  .footer-col h4{
+    font-family:'Bebas Neue', sans-serif; letter-spacing:0.12em; font-size:0.8rem; color:var(--gold);
+    margin-bottom:10px;
+  }
+  .footer-col a, .footer-col p{ color:var(--muted); font-size:0.86rem; display:block; margin-bottom:6px; }
+  .footer-social{ display:flex; gap:10px; margin-top:8px; }
+  .footer-social a{
+    width:30px; height:30px; border:1px solid var(--line); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-size:0.8rem;
+  }
+  .footer-social a:hover{ border-color:var(--gold); color:var(--gold); }
+  .footer-bottom{
+    max-width:1200px; margin:24px auto 0; padding-top:16px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <img src="logo-lumiere.png" alt="Logo Cinema Multisala Lumière">
+      <span class="brand-name">Cinema Multisala Lumière</span>
+    </div>
+    <button class="nav-toggle" aria-label="Apri menu" onclick="document.getElementById('mainnav').classList.toggle('open')">☰</button>
+    <nav class="main-nav" id="mainnav">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#programmazione">Programmazione</a></li>
+        <li><a href="#prossimamente">Prossimamente</a></li>
+        <li>
+          <a href="#">Prenota e Acquista</a>
+          <ul class="submenu">
+            <li><a href="#">Prenotazione online</a></li>
+            <li><a href="#">Prenotazione telefonica</a></li>
+            <li><a href="#">Info sulla prenotazione</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">Prezzi e Info</a>
+          <ul class="submenu">
+            <li><a href="#contatti">Contattaci</a></li>
+            <li><a href="#mappa">Raggiungi il cinema</a></li>
+            <li><a href="#">Prezzi e orari</a></li>
+            <li><a href="#">Iscrizione newsletter</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#news">Eventi e Attività</a>
+          <ul class="submenu">
+            <li><a href="#news">Eventi</a></li>
+            <li><a href="#news">Promozioni</a></li>
+            <li><a href="#news">News</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="slider" id="home">
+  <div class="slide active">
+    <div class="slide-bg"></div>
+    <div class="slide-content">
+      <span class="eyebrow">Ora in sala</span>
+      <h1>Il Notturno di Luce</h1>
+      <p>Anteprima dimostrativa — titolo e sinossi di esempio per mostrare il layout dello slider.</p>
+      <a class="btn" href="#programmazione">Vedi orari</a>
+    </div>
+  </div>
+  <div class="slide">
+    <div class="slide-bg"></div>
+    <div class="slide-content">
+      <span class="eyebrow">In arrivo</span>
+      <h1>Anno del Vento</h1>
+      <p>Dal 5 settembre in tutte le sale — testo dimostrativo per la seconda diapositiva.</p>
+      <a class="btn" href="#prossimamente">Scopri di più</a>
+    </div>
+  </div>
+  <div class="slide">
+    <div class="slide-bg"></div>
+    <div class="slide-content">
+      <span class="eyebrow">Promozione</span>
+      <h1>Cinema Revolution</h1>
+      <p>Biglietto a prezzo ridotto per film italiani ed europei — esempio di banner promozionale.</p>
+      <a class="btn" href="#news">Dettagli</a>
+    </div>
+  </div>
+  <div class="slider-dots">
+    <button class="active" aria-label="Slide 1"></button>
+    <button aria-label="Slide 2"></button>
+    <button aria-label="Slide 3"></button>
+  </div>
+</div>
+
+<div class="lightstrip" aria-hidden="true">
+  <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+</div>
+
+<section class="block" id="programmazione">
+  <div class="block-head">
+    <h2>In programmazione</h2>
+    <span class="demo-note">DATI DEMO</span>
+  </div>
+
+  <div class="programma-list">
+
+    <div class="programma-row">
+      <div class="programma-info">
+        <h3>Il Notturno di Luce</h3>
+        <div class="tags">DRAMMATICO · 118'</div>
+        <div class="programma-times">
+          <span class="slot"><span class="time">17:30</span><span class="price">9,50/8,50€</span></span>
+          <span class="slot"><span class="time">20:15</span><span class="price">9,50/8,50€</span></span>
+          <span class="slot"><span class="time">22:40</span><span class="price">9,50/8,50€</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="programma-row">
+      <div class="programma-info">
+        <h3>Corsa a Ritroso</h3>
+        <div class="tags">AZIONE · THRILLER · 104'</div>
+        <div class="programma-times">
+          <span class="slot"><span class="time">18:00</span><span class="price">9,50/8,50€</span></span>
+          <span class="slot"><span class="time">21:00</span><span class="price">9,50/8,50€</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="programma-row">
+      <div class="programma-info">
+        <h3>Il Giardino Sommerso</h3>
+        <div class="tags">ANIMAZIONE · FAMILY · 96'</div>
+        <div class="programma-times">
+          <span class="slot"><span class="time">16:15</span><span class="price">8,50/7,50€</span></span>
+          <span class="slot"><span class="time">18:20</span><span class="price">8,50/7,50€</span></span>
+          <span class="slot"><span class="time">20:30</span><span class="price">8,50/7,50€</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="programma-row">
+      <div class="programma-info">
+        <h3>Stelle a Contrasto</h3>
+        <div class="tags">FANTASCIENZA · 131'</div>
+        <div class="programma-times">
+          <span class="slot"><span class="time">19:45</span><span class="price">10,50/9,50€</span></span>
+          <span class="slot"><span class="time">22:20</span><span class="price">10,50/9,50€</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="programma-row">
+      <div class="programma-info">
+        <h3>Ritratto d'Autunno</h3>
+        <div class="tags">COMMEDIA · 99'</div>
+        <div class="programma-times">
+          <span class="slot"><span class="time">17:00</span><span class="price">9,50/8,50€</span></span>
+          <span class="slot"><span class="time">19:10</span><span class="price">9,50/8,50€</span></span>
+          <span class="slot"><span class="time">21:20</span><span class="price">9,50/8,50€</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="programma-row">
+      <div class="programma-info">
+        <h3>Ombre di Marzo</h3>
+        <div class="tags">HORROR · 92'</div>
+        <div class="programma-times">
+          <span class="slot"><span class="time">22:50</span><span class="price">9,50/8,50€</span></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="day-select-band">
+  <div class="block-head">
+    <h2>Scegli il tuo giorno</h2>
+  </div>
+  <div class="day-strip">
+    <div class="day-tab active">DOM 23/08</div>
+    <div class="day-tab">LUN 24/08</div>
+    <div class="day-tab">MAR 25/08</div>
+    <div class="day-tab">MER 26/08</div>
+    <div class="day-tab">GIO 27/08</div>
+    <div class="day-tab">VEN 28/08</div>
+    <div class="day-tab">SAB 29/08</div>
+  </div>
+</div>
+
+<div class="cta-band">
+  <a class="btn" href="#">Prenota e acquista online</a>
+  <a class="btn btn-ghost" href="#">Iscriviti alla newsletter</a>
+</div>
+
+<section class="block" id="prossimamente">
+  <div class="block-head"><h2>Prossimamente</h2></div>
+  <div class="programma-list">
+    <div class="programma-row">
+      <div class="programma-info">
+        <h3>Anno del Vento</h3>
+        <div class="tags">DRAMMATICO · dal 5 settembre</div>
+      </div>
+    </div>
+    <div class="programma-row">
+      <div class="programma-info">
+        <h3>Il Mare in Tasca</h3>
+        <div class="tags">FAMILY · dal 12 settembre</div>
+      </div>
+    </div>
+    <div class="programma-row">
+      <div class="programma-info">
+        <h3>Doppio Fondo</h3>
+        <div class="tags">THRILLER · dal 19 settembre</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="lightstrip" aria-hidden="true">
+  <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+</div>
+
+<section class="block" id="mappa">
+  <div class="block-head"><h2>Dove siamo</h2></div>
+  <div class="map-wrap">Mappa dimostrativa — qui andrà l'embed reale della posizione del cinema</div>
+</section>
+
+<section class="block" id="news">
+  <div class="block-head"><h2>Dal mondo Lumière</h2></div>
+  <div class="news-list">
+    <div class="news-item">
+      <span class="news-date mono">21/08</span>
+      <span class="news-title">Riapertura Sala 1 dopo il restyling</span>
+      <span class="news-copy">Testo dimostrativo — qui andrà il comunicato reale con i dettagli dell'iniziativa.</span>
+    </div>
+    <div class="news-item">
+      <span class="news-date mono">14/08</span>
+      <span class="news-title">Cinema Revolution: biglietto a prezzo ridotto</span>
+      <span class="news-copy">Testo dimostrativo — promozione di esempio per mostrare lo stile della sezione news.</span>
+    </div>
+  </div>
+</section>
+
+<div class="app-band">
+  <span class="eyebrow">App di prenotazione</span>
+  <div class="app-badges">
+    <span class="app-badge">▸ Scarica per Android</span>
+    <span class="app-badge">▸ Scarica per iOS</span>
+  </div>
+</div>
+
+<footer id="contatti">
+  <div class="footer-inner">
+    <div class="footer-col">
+      <h4>Dove siamo</h4>
+      <p>Cinema Multisala Lumière</p>
+      <p>Indirizzo di esempio</p>
+      <p>Città, Provincia</p>
+    </div>
+    <div class="footer-col">
+      <h4>Film</h4>
+      <a href="#programmazione">In programmazione</a>
+      <a href="#prossimamente">Prossimamente</a>
+      <a href="#">Prezzi e info</a>
+    </div>
+    <div class="footer-col">
+      <h4>News</h4>
+      <a href="#news">News ed eventi</a>
+    </div>
+    <div class="footer-col">
+      <h4>Prenotazione</h4>
+      <a href="#">Prenota e acquista online</a>
+      <a href="#">Newsletter</a>
+    </div>
+    <div class="footer-col">
+      <h4>Seguici</h4>
+      <div class="footer-social">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="Facebook">FB</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Cinema Multisala Lumière</span>
+    <span class="demo-note">ANTEPRIMA DI PROVA — dati non reali</span>
+  </div>
+</footer>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.slider-dots button');
+  let current = 0;
+  function goTo(i){
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = i;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+  dots.forEach((d,i)=> d.addEventListener('click', ()=> goTo(i)));
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!prefersReduced){
+    setInterval(()=>{ goTo((current+1) % slides.length); }, 5000);
+  }
+
+  document.querySelectorAll('.day-tab').forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      document.querySelectorAll('.day-tab').forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
