@@ -222,7 +222,15 @@
   .programma-times .slot .time{ color:var(--cream); }
   .programma-times .slot .price{ color:var(--gold); }
 
-  /* ---------- Day selector ("SCEGLI IL TUO GIORNO") ---------- */
+  /* ---------- Sale (specifiche tecniche) ---------- */
+  .sale-list{ display:flex; flex-direction:column; border-top:1px solid var(--line); }
+  .sala-row{
+    display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:6px 20px;
+    padding:14px 0; border-bottom:1px solid var(--line);
+  }
+  .sala-row h3{ font-size:1.05rem; font-style:italic; }
+  .sala-specs{ font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--muted); display:flex; gap:14px; flex-wrap:wrap; }
+  .sala-specs span{ color:var(--cream); }
   .day-select-band{
     background:var(--panel);
     border-top:1px solid var(--line);
@@ -330,6 +338,7 @@
         <li><a href="#home">Home</a></li>
         <li><a href="#programmazione">Programmazione</a></li>
         <li><a href="#prossimamente">Prossimamente</a></li>
+        <li><a href="#sale">Le Sale</a></li>
         <li>
           <a href="#">Prenota e Acquista</a>
           <ul class="submenu">
@@ -365,27 +374,27 @@
     <div class="slide-bg"></div>
     <div class="slide-content">
       <span class="eyebrow">Ora in sala</span>
-      <h1>Il Notturno di Luce</h1>
-      <p>Anteprima dimostrativa — titolo e sinossi di esempio per mostrare il layout dello slider.</p>
+      <h1>Oceania</h1>
+      <p>Sala De Curtis — spettacoli alle 16:30, 18:30, 20:30 e 22:30.</p>
       <a class="btn" href="#programmazione">Vedi orari</a>
     </div>
   </div>
   <div class="slide">
     <div class="slide-bg"></div>
     <div class="slide-content">
-      <span class="eyebrow">In arrivo</span>
-      <h1>Anno del Vento</h1>
-      <p>Dal 5 settembre in tutte le sale — testo dimostrativo per la seconda diapositiva.</p>
-      <a class="btn" href="#prossimamente">Scopri di più</a>
+      <span class="eyebrow">Ora in sala</span>
+      <h1>SpiderMan Brand New Day</h1>
+      <p>Sala Sordi — spettacoli alle 18:30 e 21:30.</p>
+      <a class="btn" href="#programmazione">Vedi orari</a>
     </div>
   </div>
   <div class="slide">
     <div class="slide-bg"></div>
     <div class="slide-content">
-      <span class="eyebrow">Promozione</span>
-      <h1>Cinema Revolution</h1>
-      <p>Biglietto a prezzo ridotto per film italiani ed europei — esempio di banner promozionale.</p>
-      <a class="btn" href="#news">Dettagli</a>
+      <span class="eyebrow">Ora in sala</span>
+      <h1>Odissea</h1>
+      <p>Sala Bergman — spettacoli alle 18:00 e 21:15.</p>
+      <a class="btn" href="#programmazione">Vedi orari</a>
     </div>
   </div>
   <div class="slider-dots">
@@ -402,79 +411,147 @@
 <section class="block" id="programmazione">
   <div class="block-head">
     <h2>In programmazione</h2>
-    <span class="demo-note">DATI DEMO</span>
   </div>
 
   <div class="programma-list">
 
     <div class="programma-row">
       <div class="programma-info">
-        <h3>Il Notturno di Luce</h3>
-        <div class="tags">DRAMMATICO · 118'</div>
+        <h3>Oceania</h3>
+        <div class="tags">SALA DE CURTIS</div>
         <div class="programma-times">
-          <span class="slot"><span class="time">17:30</span><span class="price">9,50/8,50€</span></span>
-          <span class="slot"><span class="time">20:15</span><span class="price">9,50/8,50€</span></span>
-          <span class="slot"><span class="time">22:40</span><span class="price">9,50/8,50€</span></span>
+          <span class="slot"><span class="time">16:30</span></span>
+          <span class="slot"><span class="time">18:30</span></span>
+          <span class="slot"><span class="time">20:30</span></span>
+          <span class="slot"><span class="time">22:30</span></span>
         </div>
+        <div class="tags" style="margin-top:6px;">Intero €9,5 · Ridotto €8,5 · Abb. non valido</div>
       </div>
     </div>
 
     <div class="programma-row">
       <div class="programma-info">
-        <h3>Corsa a Ritroso</h3>
-        <div class="tags">AZIONE · THRILLER · 104'</div>
+        <h3>SpiderMan Brand New Day</h3>
+        <div class="tags">SALA SORDI</div>
         <div class="programma-times">
-          <span class="slot"><span class="time">18:00</span><span class="price">9,50/8,50€</span></span>
-          <span class="slot"><span class="time">21:00</span><span class="price">9,50/8,50€</span></span>
+          <span class="slot"><span class="time">18:30</span></span>
+          <span class="slot"><span class="time">21:30</span></span>
         </div>
+        <div class="tags" style="margin-top:6px;">Intero €10,5 · Ridotto €9,5 · Abb. valido</div>
       </div>
     </div>
 
     <div class="programma-row">
       <div class="programma-info">
-        <h3>Il Giardino Sommerso</h3>
-        <div class="tags">ANIMAZIONE · FAMILY · 96'</div>
+        <h3>Odissea</h3>
+        <div class="tags">SALA BERGMAN</div>
         <div class="programma-times">
-          <span class="slot"><span class="time">16:15</span><span class="price">8,50/7,50€</span></span>
-          <span class="slot"><span class="time">18:20</span><span class="price">8,50/7,50€</span></span>
-          <span class="slot"><span class="time">20:30</span><span class="price">8,50/7,50€</span></span>
+          <span class="slot"><span class="time">18:00</span></span>
+          <span class="slot"><span class="time">21:15</span></span>
         </div>
+        <div class="tags" style="margin-top:6px;">Intero €10,5 · Ridotto €9,6 · Abb. valido</div>
       </div>
     </div>
 
     <div class="programma-row">
       <div class="programma-info">
-        <h3>Stelle a Contrasto</h3>
-        <div class="tags">FANTASCIENZA · 131'</div>
+        <h3>Insidious: Fuori dal Altrove</h3>
+        <div class="tags">SALA VIRNA LISI</div>
         <div class="programma-times">
-          <span class="slot"><span class="time">19:45</span><span class="price">10,50/9,50€</span></span>
-          <span class="slot"><span class="time">22:20</span><span class="price">10,50/9,50€</span></span>
+          <span class="slot"><span class="time">18:45</span></span>
+          <span class="slot"><span class="time">20:40</span></span>
+          <span class="slot"><span class="time">22:40</span></span>
         </div>
+        <div class="tags" style="margin-top:6px;">Intero €9,6 · Ridotto — · Abb. non valido</div>
       </div>
     </div>
 
     <div class="programma-row">
       <div class="programma-info">
-        <h3>Ritratto d'Autunno</h3>
-        <div class="tags">COMMEDIA · 99'</div>
+        <h3>Minions</h3>
+        <div class="tags">SALA DE SICA</div>
         <div class="programma-times">
-          <span class="slot"><span class="time">17:00</span><span class="price">9,50/8,50€</span></span>
-          <span class="slot"><span class="time">19:10</span><span class="price">9,50/8,50€</span></span>
-          <span class="slot"><span class="time">21:20</span><span class="price">9,50/8,50€</span></span>
+          <span class="slot"><span class="time">18:30</span></span>
         </div>
+        <div class="tags" style="margin-top:6px;">Intero €8,5 · Ridotto €7,5 · Abb. valido</div>
       </div>
     </div>
 
     <div class="programma-row">
       <div class="programma-info">
-        <h3>Ombre di Marzo</h3>
-        <div class="tags">HORROR · 92'</div>
+        <h3>The Death of Robin Hood</h3>
+        <div class="tags">SALA DE SICA</div>
         <div class="programma-times">
-          <span class="slot"><span class="time">22:50</span><span class="price">9,50/8,50€</span></span>
+          <span class="slot"><span class="time">20:15</span></span>
         </div>
+        <div class="tags" style="margin-top:6px;">Intero €9 · Ridotto — · Abb. valido</div>
       </div>
     </div>
 
+    <div class="programma-row">
+      <div class="programma-info">
+        <h3>Camp Niasma</h3>
+        <div class="tags">SALA DE SICA</div>
+        <div class="programma-times">
+          <span class="slot"><span class="time">22:15</span></span>
+        </div>
+        <div class="tags" style="margin-top:6px;">Intero €9,5 · Ridotto — · Abb. valido</div>
+      </div>
+    </div>
+
+    <div class="programma-row">
+      <div class="programma-info">
+        <h3>La Fine di Oak Street</h3>
+        <div class="tags">SALA MASTROIANNI</div>
+        <div class="programma-times">
+          <span class="slot"><span class="time">18:35</span></span>
+          <span class="slot"><span class="time">20:15</span></span>
+        </div>
+        <div class="tags" style="margin-top:6px;">Intero €9 · Ridotto — · Abb. valido</div>
+      </div>
+    </div>
+
+    <div class="programma-row">
+      <div class="programma-info">
+        <h3>Hokum</h3>
+        <div class="tags">SALA MASTROIANNI</div>
+        <div class="programma-times">
+          <span class="slot"><span class="time">22:15</span></span>
+        </div>
+        <div class="tags" style="margin-top:6px;">Intero €3,5 · Ridotto — · Abb. non valido</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="block" id="sale">
+  <div class="block-head"><h2>Le nostre sale</h2></div>
+  <div class="sale-list">
+    <div class="sala-row">
+      <h3>Sala De Curtis</h3>
+      <div class="sala-specs"><span>371 posti</span><span>Audio 5.1</span><span>Laser 4K</span></div>
+    </div>
+    <div class="sala-row">
+      <h3>Sala Sordi</h3>
+      <div class="sala-specs"><span>307 posti</span><span>Audio 5.1</span><span>Laser 4K</span></div>
+    </div>
+    <div class="sala-row">
+      <h3>Sala Bergman</h3>
+      <div class="sala-specs"><span>164 posti</span><span>Audio 7.1</span><span>Laser 4K</span></div>
+    </div>
+    <div class="sala-row">
+      <h3>Sala Virna Lisi</h3>
+      <div class="sala-specs"><span>111 posti</span><span>Audio 7.1</span><span>Laser 4K</span></div>
+    </div>
+    <div class="sala-row">
+      <h3>Sala De Sica</h3>
+      <div class="sala-specs"><span>81 posti</span><span>Audio 5.1</span><span>Laser 2K</span></div>
+    </div>
+    <div class="sala-row">
+      <h3>Sala Mastroianni</h3>
+      <div class="sala-specs"><span>51 posti</span><span>Audio 5.1</span><span>Laser 2K</span></div>
+    </div>
   </div>
 </section>
 
@@ -499,7 +576,10 @@
 </div>
 
 <section class="block" id="prossimamente">
-  <div class="block-head"><h2>Prossimamente</h2></div>
+  <div class="block-head">
+    <h2>Prossimamente</h2>
+    <span class="demo-note">DATI DEMO</span>
+  </div>
   <div class="programma-list">
     <div class="programma-row">
       <div class="programma-info">
