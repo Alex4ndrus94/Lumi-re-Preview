@@ -159,12 +159,18 @@
     transition:opacity 1s ease;
   }
   .slide.active{ opacity:1; }
-  .slide-bg{
-    position:absolute; inset:0; z-index:0;
+  .slide-photo{
+    position:absolute; inset:0;
+    background-size:cover; background-position:center top;
+    background-color:#141212;
+    transition:opacity 0.6s ease;
   }
-  .slide:nth-child(1) .slide-bg{ background:radial-gradient(ellipse at 30% 20%, rgba(139,50,50,0.55), transparent 60%), linear-gradient(160deg,#241D1D,#0d0a0a); }
-  .slide:nth-child(2) .slide-bg{ background:radial-gradient(ellipse at 70% 10%, rgba(226,114,108,0.22), transparent 55%), linear-gradient(160deg,#221a1a,#0d0a0a); }
-  .slide:nth-child(3) .slide-bg{ background:radial-gradient(ellipse at 50% 0%, rgba(139,50,50,0.4), transparent 60%), linear-gradient(160deg,#241a1a,#0d0a0a); }
+  .slide-gradient{
+    position:absolute; inset:0;
+  }
+  .slide:nth-child(1) .slide-gradient{ background:radial-gradient(ellipse at 30% 20%, rgba(139,50,50,0.55), transparent 60%), linear-gradient(90deg, rgba(20,18,18,0.92) 0%, rgba(20,18,18,0.55) 45%, rgba(20,18,18,0.85) 100%); }
+  .slide:nth-child(2) .slide-gradient{ background:radial-gradient(ellipse at 70% 10%, rgba(226,114,108,0.22), transparent 55%), linear-gradient(90deg, rgba(20,18,18,0.92) 0%, rgba(20,18,18,0.55) 45%, rgba(20,18,18,0.85) 100%); }
+  .slide:nth-child(3) .slide-gradient{ background:radial-gradient(ellipse at 50% 0%, rgba(139,50,50,0.4), transparent 60%), linear-gradient(90deg, rgba(20,18,18,0.92) 0%, rgba(20,18,18,0.55) 45%, rgba(20,18,18,0.85) 100%); }
   .slide-content{ position:relative; z-index:1; max-width:640px; }
   .slide-content .eyebrow{ display:block; margin-bottom:8px; }
   .slide-content h1{ font-size:clamp(1.9rem,5vw,3rem); font-style:italic; margin-bottom:10px; }
@@ -366,6 +372,7 @@
     font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--muted);
   }
 </style>
+<script src="data.js"></script>
 </head>
 <body>
 
@@ -414,7 +421,8 @@
 
 <div class="slider" id="home">
   <div class="slide active">
-    <div class="slide-bg"></div>
+    <div class="slide-photo" data-tmdb-bg="Oceania"></div>
+    <div class="slide-gradient"></div>
     <div class="slide-content">
       <span class="eyebrow">Ora in sala</span>
       <h1>Oceania</h1>
@@ -423,7 +431,8 @@
     </div>
   </div>
   <div class="slide">
-    <div class="slide-bg"></div>
+    <div class="slide-photo" data-tmdb-bg="SpiderMan Brand New Day"></div>
+    <div class="slide-gradient"></div>
     <div class="slide-content">
       <span class="eyebrow">Ora in sala</span>
       <h1>SpiderMan Brand New Day</h1>
@@ -432,7 +441,8 @@
     </div>
   </div>
   <div class="slide">
-    <div class="slide-bg"></div>
+    <div class="slide-photo" data-tmdb-bg="Odissea"></div>
+    <div class="slide-gradient"></div>
     <div class="slide-content">
       <span class="eyebrow">Ora in sala</span>
       <h1>Odissea</h1>
@@ -456,134 +466,9 @@
     <h2>In programmazione</h2>
   </div>
 
-  <div class="programma-list">
+  <div class="programma-list" id="programmaList"></div>
+</section>
 
-    <div class="programma-row" onclick="openScheda('Oceania')">
-      <div class="programma-info">
-        <h3 data-tmdb-title="Oceania">Oceania</h3>
-        <span class="scheda-hint">Tocca per la scheda ›</span>
-        <div class="tags tmdb-meta">Recupero dati…</div>
-        <div class="tags">SALA DE CURTIS</div>
-        <div class="programma-times">
-          <span class="slot"><span class="time">16:30</span></span>
-          <span class="slot"><span class="time">18:30</span></span>
-          <span class="slot"><span class="time">20:30</span></span>
-          <span class="slot"><span class="time">22:30</span></span>
-        </div>
-        <div class="tags" style="margin-top:6px;">Intero €9,5 · Ridotto €8,5 · Abb. non valido</div>
-      </div>
-    </div>
-
-    <div class="programma-row" onclick="openScheda('SpiderMan Brand New Day')">
-      <div class="programma-info">
-        <h3 data-tmdb-title="SpiderMan Brand New Day">SpiderMan Brand New Day</h3>
-        <span class="scheda-hint">Tocca per la scheda ›</span>
-        <div class="tags tmdb-meta">Recupero dati…</div>
-        <div class="tags">SALA SORDI</div>
-        <div class="programma-times">
-          <span class="slot"><span class="time">18:30</span></span>
-          <span class="slot"><span class="time">21:30</span></span>
-        </div>
-        <div class="tags" style="margin-top:6px;">Intero €10,5 · Ridotto €9,5 · Abb. valido</div>
-      </div>
-    </div>
-
-    <div class="programma-row" onclick="openScheda('Odissea')">
-      <div class="programma-info">
-        <h3 data-tmdb-title="Odissea">Odissea</h3>
-        <span class="scheda-hint">Tocca per la scheda ›</span>
-        <div class="tags tmdb-meta">Recupero dati…</div>
-        <div class="tags">SALA BERGMAN</div>
-        <div class="programma-times">
-          <span class="slot"><span class="time">18:00</span></span>
-          <span class="slot"><span class="time">21:15</span></span>
-        </div>
-        <div class="tags" style="margin-top:6px;">Intero €10,5 · Ridotto €9,6 · Abb. valido</div>
-      </div>
-    </div>
-
-    <div class="programma-row" onclick="openScheda('Insidious: Fuori dal Altrove')">
-      <div class="programma-info">
-        <h3 data-tmdb-title="Insidious: Fuori dal Altrove">Insidious: Fuori dal Altrove</h3>
-        <span class="scheda-hint">Tocca per la scheda ›</span>
-        <div class="tags tmdb-meta">Recupero dati…</div>
-        <div class="tags">SALA VIRNA LISI</div>
-        <div class="programma-times">
-          <span class="slot"><span class="time">18:45</span></span>
-          <span class="slot"><span class="time">20:40</span></span>
-          <span class="slot"><span class="time">22:40</span></span>
-        </div>
-        <div class="tags" style="margin-top:6px;">Intero €9,6 · Ridotto — · Abb. non valido</div>
-      </div>
-    </div>
-
-    <div class="programma-row" onclick="openScheda('Minions')">
-      <div class="programma-info">
-        <h3 data-tmdb-title="Minions">Minions</h3>
-        <span class="scheda-hint">Tocca per la scheda ›</span>
-        <div class="tags tmdb-meta">Recupero dati…</div>
-        <div class="tags">SALA DE SICA</div>
-        <div class="programma-times">
-          <span class="slot"><span class="time">18:30</span></span>
-        </div>
-        <div class="tags" style="margin-top:6px;">Intero €8,5 · Ridotto €7,5 · Abb. valido</div>
-      </div>
-    </div>
-
-    <div class="programma-row" onclick="openScheda('The Death of Robin Hood')">
-      <div class="programma-info">
-        <h3 data-tmdb-title="The Death of Robin Hood">The Death of Robin Hood</h3>
-        <span class="scheda-hint">Tocca per la scheda ›</span>
-        <div class="tags tmdb-meta">Recupero dati…</div>
-        <div class="tags">SALA DE SICA</div>
-        <div class="programma-times">
-          <span class="slot"><span class="time">20:15</span></span>
-        </div>
-        <div class="tags" style="margin-top:6px;">Intero €9 · Ridotto — · Abb. valido</div>
-      </div>
-    </div>
-
-    <div class="programma-row" onclick="openScheda('Camp Niasma')">
-      <div class="programma-info">
-        <h3 data-tmdb-title="Camp Niasma">Camp Niasma</h3>
-        <span class="scheda-hint">Tocca per la scheda ›</span>
-        <div class="tags tmdb-meta">Recupero dati…</div>
-        <div class="tags">SALA DE SICA</div>
-        <div class="programma-times">
-          <span class="slot"><span class="time">22:15</span></span>
-        </div>
-        <div class="tags" style="margin-top:6px;">Intero €9,5 · Ridotto — · Abb. valido</div>
-      </div>
-    </div>
-
-    <div class="programma-row" onclick="openScheda('La Fine di Oak Street')">
-      <div class="programma-info">
-        <h3 data-tmdb-title="La Fine di Oak Street">La Fine di Oak Street</h3>
-        <span class="scheda-hint">Tocca per la scheda ›</span>
-        <div class="tags tmdb-meta">Recupero dati…</div>
-        <div class="tags">SALA MASTROIANNI</div>
-        <div class="programma-times">
-          <span class="slot"><span class="time">18:35</span></span>
-          <span class="slot"><span class="time">20:15</span></span>
-        </div>
-        <div class="tags" style="margin-top:6px;">Intero €9 · Ridotto — · Abb. valido</div>
-      </div>
-    </div>
-
-    <div class="programma-row" onclick="openScheda('Hokum')">
-      <div class="programma-info">
-        <h3 data-tmdb-title="Hokum">Hokum</h3>
-        <span class="scheda-hint">Tocca per la scheda ›</span>
-        <div class="tags tmdb-meta">Recupero dati…</div>
-        <div class="tags">SALA MASTROIANNI</div>
-        <div class="programma-times">
-          <span class="slot"><span class="time">22:15</span></span>
-        </div>
-        <div class="tags" style="margin-top:6px;">Intero €3,5 · Ridotto — · Abb. non valido</div>
-      </div>
-    </div>
-
-  </div>
 </section>
 
 <section class="block" id="sale">
@@ -641,26 +526,7 @@
     <h2>Prossimamente</h2>
     <span class="demo-note">DATI DEMO</span>
   </div>
-  <div class="programma-list">
-    <div class="programma-row">
-      <div class="programma-info">
-        <h3>Anno del Vento</h3>
-        <div class="tags">DRAMMATICO · dal 5 settembre</div>
-      </div>
-    </div>
-    <div class="programma-row">
-      <div class="programma-info">
-        <h3>Il Mare in Tasca</h3>
-        <div class="tags">FAMILY · dal 12 settembre</div>
-      </div>
-    </div>
-    <div class="programma-row">
-      <div class="programma-info">
-        <h3>Doppio Fondo</h3>
-        <div class="tags">THRILLER · dal 19 settembre</div>
-      </div>
-    </div>
-  </div>
+  <div class="programma-list" id="prossimamenteList"></div>
 </section>
 
 <div class="lightstrip" aria-hidden="true">
@@ -729,7 +595,10 @@
   </div>
   <div class="footer-bottom">
     <span>© 2026 Cinema Multisala Lumière</span>
-    <span class="demo-note">ANTEPRIMA DI PROVA — dati non reali</span>
+    <span style="display:flex; gap:14px; align-items:center;">
+      <a href="admin.html" style="color:var(--muted);">Gestione programmazione</a>
+      <span class="demo-note">ANTEPRIMA DI PROVA — dati non reali</span>
+    </span>
   </div>
 </footer>
 
@@ -817,7 +686,65 @@
       }
     }
   }
+  /* ---------- Render della programmazione da data.js ---------- */
+  function renderProgrammazione(){
+    const list = document.getElementById('programmaList');
+    if(list && Array.isArray(FILM_PROGRAMMAZIONE)){
+      list.innerHTML = FILM_PROGRAMMAZIONE.map(f => {
+        const orariHtml = f.orari.map(t => `<span class="slot"><span class="time">${t}</span></span>`).join('');
+        const ridotto = f.ridotto ? `€${f.ridotto}` : '—';
+        const abb = f.abbonamento ? 'Abb. valido' : 'Abb. non valido';
+        const escTitle = f.titolo.replace(/'/g, "\\'");
+        return `
+    <div class="programma-row" onclick="openScheda('${escTitle}')">
+      <div class="programma-info">
+        <h3 data-tmdb-title="${f.titolo}">${f.titolo}</h3>
+        <span class="scheda-hint">Tocca per la scheda ›</span>
+        <div class="tags tmdb-meta">Recupero dati…</div>
+        <div class="tags">${f.sala.toUpperCase()}</div>
+        <div class="programma-times">${orariHtml}</div>
+        <div class="tags" style="margin-top:6px;">Intero €${f.intero} · Ridotto ${ridotto} · ${abb}</div>
+      </div>
+    </div>`;
+      }).join('');
+    }
+
+    const upcoming = document.getElementById('prossimamenteList');
+    if(upcoming && Array.isArray(FILM_PROSSIMAMENTE)){
+      upcoming.innerHTML = FILM_PROSSIMAMENTE.map(f => `
+    <div class="programma-row">
+      <div class="programma-info">
+        <h3>${f.titolo}</h3>
+        <div class="tags">${f.info}</div>
+      </div>
+    </div>`).join('');
+    }
+  }
+  renderProgrammazione();
+
   loadTmdbData();
+
+  /* ---------- Sfondi reali dello slider da TMDb ---------- */
+  async function loadSlideBackdrops(){
+    if(!TMDB_TOKEN) return;
+    const bgEls = document.querySelectorAll('[data-tmdb-bg]');
+    for(const el of bgEls){
+      const title = el.dataset.tmdbBg;
+      try{
+        const searchUrl = `https://api.themoviedb.org/3/search/movie?language=it-IT&query=${encodeURIComponent(title)}`;
+        const searchRes = await fetch(searchUrl, { headers: TMDB_HEADERS });
+        const searchData = await searchRes.json();
+        const movie = searchData.results && searchData.results[0];
+        const path = movie && (movie.backdrop_path || movie.poster_path);
+        if(path){
+          el.style.backgroundImage = `url(https://image.tmdb.org/t/p/w1280${path})`;
+        }
+      }catch(err){
+        console.warn('TMDb: errore nel recupero sfondo per', title, err);
+      }
+    }
+  }
+  loadSlideBackdrops();
 
   /* ---------- Scheda film (click su una riga) ---------- */
   const schedaOverlay = document.getElementById('schedaOverlay');

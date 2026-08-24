@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestione Programmazione — Cinema Multisala Lumière</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,600;1,500&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="data.js"></script>
+<style>
+  :root{
+    --noir:#141212; --panel:#1E1A1A; --panel-2:#241E1E;
+    --maroon:#8B3232; --maroon-bright:#A9403A; --gold:#E2726C;
+    --cream:#F3E9DD; --muted:#9C8F86; --line: rgba(243,233,221,0.14);
+    --ok:#7FB27A; --radius:2px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--noir); color:var(--cream);
+    font-family:'Work Sans', sans-serif; line-height:1.5; padding-bottom:60px;
+  }
+  h1,h2,h3{ font-family:'Cormorant Garamond', serif; font-style:italic; font-weight:600; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  header{
+    background:linear-gradient(180deg, #7A2C2C 0%, var(--maroon) 100%);
+    padding:18px 20px;
+  }
+  header h1{ font-size:1.4rem; color:var(--cream); }
+  header p{ font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:rgba(243,233,221,0.8); margin-top:4px; }
+
+  main{ max-width:720px; margin:0 auto; padding:20px; }
+  section{ margin-bottom:36px; }
+  section > h2{ font-size:1.4rem; margin-bottom:14px; }
+
+  .card{
+    background:var(--panel); border:1px solid var(--line);
+    padding:16px; margin-bottom:12px;
+  }
+  .card-row{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+  .card h3{ font-size:1.1rem; margin-bottom:4px; }
+  .card .meta{ font-family:'IBM Plex Mono', monospace; font-size:0.76rem; color:var(--muted); }
+  .card-actions{ display:flex; gap:8px; flex:0 0 auto; }
+  .icon-btn{
+    width:30px; height:30px; border-radius:50%;
+    background:var(--noir); border:1px solid var(--line);
+    color:var(--cream); font-size:0.85rem;
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+  }
+  .icon-btn:hover{ border-color:var(--gold); color:var(--gold); }
+  .icon-btn.danger:hover{ border-color:#c0524a; color:#c0524a; }
+
+  label{ display:block; font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--muted); margin:12px 0 5px; }
+  input[type="text"], select{
+    width:100%; padding:11px 12px;
+    background:var(--noir); border:1px solid var(--line); color:var(--cream);
+    font-family:'Work Sans', sans-serif; font-size:0.94rem; border-radius:var(--radius);
+  }
+  input:focus, select:focus{ outline:none; border-color:var(--gold); }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .row3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+  .checkbox-line{ display:flex; align-items:center; gap:8px; margin-top:14px; }
+  .checkbox-line input{ width:auto; }
+  .checkbox-line label{ margin:0; font-family:'Work Sans', sans-serif; font-size:0.9rem; color:var(--cream); }
+
+  .form-card{ background:var(--panel-2); border:1px solid var(--line); padding:18px; }
+  .form-card h3{ font-style:normal; font-family:'Bebas Neue', sans-serif; letter-spacing:0.1em; font-size:0.95rem; color:var(--gold); margin-bottom:4px; }
+
+  .btn{
+    display:inline-block; font-family:'Bebas Neue', sans-serif; letter-spacing:0.12em;
+    font-size:0.86rem; padding:12px 22px; background:var(--maroon); color:var(--cream);
+    border:1px solid var(--maroon-bright); border-radius:var(--radius); cursor:pointer;
+    margin-top:16px;
+  }
+  .btn:hover{ background:var(--maroon-bright); }
+  .btn-secondary{ background:transparent; border:1px solid var(--line); }
+  .btn-secondary:hover{ border-color:var(--gold); color:var(--gold); }
+  .btn-block{ width:100%; text-align:center; }
+
+  .generate-band{
+    background:var(--panel); border:1px solid var(--line); padding:20px; margin-top:10px;
+  }
+  .generate-band .eyebrow{
+    font-family:'Bebas Neue', sans-serif; letter-spacing:0.2em; font-size:0.76rem; color:var(--gold); display:block; margin-bottom:10px;
+  }
+  textarea{
+    width:100%; min-height:220px; background:var(--noir); border:1px solid var(--line); color:var(--cream);
+    font-family:'IBM Plex Mono', monospace; font-size:0.76rem; padding:12px; border-radius:var(--radius);
+    white-space:pre; resize:vertical;
+  }
+  .copy-status{ font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--ok); margin-top:8px; min-height:1.2em; }
+  .instructions{
+    font-family:'IBM Plex Mono', monospace; font-size:0.76rem; color:var(--muted); margin-top:16px; line-height:1.7;
+  }
+  .instructions strong{ color:var(--cream); }
+  .empty-note{ font-family:'IBM Plex Mono', monospace; font-size:0.8rem; color:var(--muted); padding:10px 0; }
+  a.back{ font-family:'IBM Plex Mono', monospace; font-size:0.76rem; color:var(--muted); display:inline-block; margin-top:6px; }
+  a.back:hover{ color:var(--gold); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Gestione Programmazione</h1>
+  <p>Cinema Multisala Lumière — pannello di modifica (locale, senza salvataggio automatico)</p>
+</header>
+
+<main>
+
+  <div class="instructions" style="margin-bottom:26px;">
+    Modifica i film qui sotto, poi in fondo alla pagina premi <strong>"Genera codice aggiornato"</strong>,
+    copia il testo e sostituiscilo nel file <strong>data.js</strong> su GitHub. Le modifiche fatte qui
+    <strong>non si salvano da sole</strong> finché non aggiorni data.js su GitHub.
+  </div>
+
+  <section>
+    <h2>In programmazione</h2>
+    <div id="listaProgrammazione"></div>
+    <div class="empty-note" id="emptyProgrammazione" style="display:none;">Nessun film in programmazione. Aggiungine uno qui sotto.</div>
+
+    <div class="form-card" id="formProgrammazione">
+      <h3 id="formProgTitle">AGGIUNGI FILM</h3>
+      <label>Titolo film</label>
+      <input type="text" id="p-titolo" placeholder="Es. Oceania">
+
+      <label>Sala</label>
+      <select id="p-sala">
+        <option>Sala De Curtis</option>
+        <option>Sala Sordi</option>
+        <option>Sala Bergman</option>
+        <option>Sala Virna Lisi</option>
+        <option>Sala De Sica</option>
+        <option>Sala Mastroianni</option>
+      </select>
+
+      <label>Orari (separati da virgola)</label>
+      <input type="text" id="p-orari" placeholder="Es. 18:30, 21:15">
+
+      <div class="row3">
+        <div>
+          <label>Intero (€)</label>
+          <input type="text" id="p-intero" placeholder="9,5">
+        </div>
+        <div>
+          <label>Ridotto (€, opzionale)</label>
+          <input type="text" id="p-ridotto" placeholder="8,5">
+        </div>
+        <div style="display:flex; align-items:flex-end;">
+          <div class="checkbox-line" style="margin-top:0;">
+            <input type="checkbox" id="p-abb">
+            <label for="p-abb">Abbonamento valido</label>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn" onclick="salvaFilmProgrammazione()" id="p-save-btn">Aggiungi film</button>
+        <button class="btn btn-secondary" onclick="annullaModificaProgrammazione()" id="p-cancel-btn" style="display:none;">Annulla modifica</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Prossimamente</h2>
+    <div id="listaProssimamente"></div>
+    <div class="empty-note" id="emptyProssimamente" style="display:none;">Nessun film in "Prossimamente". Aggiungine uno qui sotto.</div>
+
+    <div class="form-card" id="formProssimamente">
+      <h3 id="formNextTitle">AGGIUNGI FILM (PROSSIMAMENTE)</h3>
+      <label>Titolo film</label>
+      <input type="text" id="n-titolo" placeholder="Es. Anno del Vento">
+
+      <label>Info (genere · data d'uscita)</label>
+      <input type="text" id="n-info" placeholder="Es. DRAMMATICO · dal 5 settembre">
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn" onclick="salvaFilmProssimamente()" id="n-save-btn">Aggiungi film</button>
+        <button class="btn btn-secondary" onclick="annullaModificaProssimamente()" id="n-cancel-btn" style="display:none;">Annulla modifica</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="generate-band">
+      <span class="eyebrow">Passo finale</span>
+      <button class="btn btn-block" onclick="generaCodice()">Genera codice aggiornato</button>
+      <textarea id="output" readonly placeholder="Il codice aggiornato di data.js comparirà qui…" style="margin-top:14px;"></textarea>
+      <button class="btn btn-secondary btn-block" onclick="copiaCodice()">Copia codice</button>
+      <div class="copy-status" id="copyStatus"></div>
+      <div class="instructions">
+        <strong>Come pubblicarlo:</strong><br>
+        1. Copia il codice qui sopra<br>
+        2. Vai su GitHub, apri il file <strong>data.js</strong> nel repository del sito<br>
+        3. Seleziona tutto il contenuto esistente e sostituiscilo incollando il nuovo codice<br>
+        4. Salva/committa — la programmazione sul sito si aggiorna subito
+      </div>
+    </div>
+    <a class="back" href="index.html">← Torna al sito</a>
+  </section>
+
+</main>
+
+<script>
+  // Lavoriamo su copie locali dei dati (caricati da data.js), senza toccare il file finché non generi il codice
+  let programmazione = JSON.parse(JSON.stringify(typeof FILM_PROGRAMMAZIONE !== 'undefined' ? FILM_PROGRAMMAZIONE : []));
+  let prossimamente = JSON.parse(JSON.stringify(typeof FILM_PROSSIMAMENTE !== 'undefined' ? FILM_PROSSIMAMENTE : []));
+
+  let editIndexProg = null;
+  let editIndexNext = null;
+
+  function renderListaProgrammazione(){
+    const container = document.getElementById('listaProgrammazione');
+    const empty = document.getElementById('emptyProgrammazione');
+    empty.style.display = programmazione.length ? 'none' : 'block';
+    container.innerHTML = programmazione.map((f, i) => `
+      <div class="card">
+        <div class="card-row">
+          <div>
+            <h3>${f.titolo}</h3>
+            <div class="meta">${f.sala.toUpperCase()} · ${f.orari.join(', ')}</div>
+            <div class="meta">Intero €${f.intero} · Ridotto ${f.ridotto ? '€'+f.ridotto : '—'} · ${f.abbonamento ? 'Abb. valido' : 'Abb. non valido'}</div>
+          </div>
+          <div class="card-actions">
+            <button class="icon-btn" onclick="modificaFilmProgrammazione(${i})" aria-label="Modifica">✎</button>
+            <button class="icon-btn danger" onclick="eliminaFilmProgrammazione(${i})" aria-label="Elimina">✕</button>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  function renderListaProssimamente(){
+    const container = document.getElementById('listaProssimamente');
+    const empty = document.getElementById('emptyProssimamente');
+    empty.style.display = prossimamente.length ? 'none' : 'block';
+    container.innerHTML = prossimamente.map((f, i) => `
+      <div class="card">
+        <div class="card-row">
+          <div>
+            <h3>${f.titolo}</h3>
+            <div class="meta">${f.info}</div>
+          </div>
+          <div class="card-actions">
+            <button class="icon-btn" onclick="modificaFilmProssimamente(${i})" aria-label="Modifica">✎</button>
+            <button class="icon-btn danger" onclick="eliminaFilmProssimamente(${i})" aria-label="Elimina">✕</button>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  function salvaFilmProgrammazione(){
+    const titolo = document.getElementById('p-titolo').value.trim();
+    const sala = document.getElementById('p-sala').value;
+    const orariRaw = document.getElementById('p-orari').value.trim();
+    const intero = document.getElementById('p-intero').value.trim();
+    const ridotto = document.getElementById('p-ridotto').value.trim();
+    const abbonamento = document.getElementById('p-abb').checked;
+
+    if(!titolo || !orariRaw || !intero){
+      alert('Compila almeno titolo, orari e prezzo intero.');
+      return;
+    }
+    const orari = orariRaw.split(',').map(o => o.trim()).filter(Boolean);
+    const film = { titolo, sala, orari, intero, ridotto, abbonamento };
+
+    if(editIndexProg !== null){
+      programmazione[editIndexProg] = film;
+      editIndexProg = null;
+    }else{
+      programmazione.push(film);
+    }
+    resetFormProgrammazione();
+    renderListaProgrammazione();
+  }
+
+  function modificaFilmProgrammazione(i){
+    const f = programmazione[i];
+    document.getElementById('p-titolo').value = f.titolo;
+    document.getElementById('p-sala').value = f.sala;
+    document.getElementById('p-orari').value = f.orari.join(', ');
+    document.getElementById('p-intero').value = f.intero;
+    document.getElementById('p-ridotto').value = f.ridotto;
+    document.getElementById('p-abb').checked = !!f.abbonamento;
+    editIndexProg = i;
+    document.getElementById('formProgTitle').textContent = 'MODIFICA FILM';
+    document.getElementById('p-save-btn').textContent = 'Salva modifiche';
+    document.getElementById('p-cancel-btn').style.display = 'inline-block';
+    document.getElementById('formProgrammazione').scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  function eliminaFilmProgrammazione(i){
+    if(confirm(`Eliminare "${programmazione[i].titolo}" dalla programmazione?`)){
+      programmazione.splice(i, 1);
+      renderListaProgrammazione();
+    }
+  }
+
+  function annullaModificaProgrammazione(){
+    resetFormProgrammazione();
+  }
+
+  function resetFormProgrammazione(){
+    editIndexProg = null;
+    document.getElementById('p-titolo').value = '';
+    document.getElementById('p-orari').value = '';
+    document.getElementById('p-intero').value = '';
+    document.getElementById('p-ridotto').value = '';
+    document.getElementById('p-abb').checked = false;
+    document.getElementById('formProgTitle').textContent = 'AGGIUNGI FILM';
+    document.getElementById('p-save-btn').textContent = 'Aggiungi film';
+    document.getElementById('p-cancel-btn').style.display = 'none';
+  }
+
+  function salvaFilmProssimamente(){
+    const titolo = document.getElementById('n-titolo').value.trim();
+    const info = document.getElementById('n-info').value.trim();
+    if(!titolo){
+      alert('Inserisci almeno il titolo.');
+      return;
+    }
+    const film = { titolo, info };
+    if(editIndexNext !== null){
+      prossimamente[editIndexNext] = film;
+      editIndexNext = null;
+    }else{
+      prossimamente.push(film);
+    }
+    resetFormProssimamente();
+    renderListaProssimamente();
+  }
+
+  function modificaFilmProssimamente(i){
+    const f = prossimamente[i];
+    document.getElementById('n-titolo').value = f.titolo;
+    document.getElementById('n-info').value = f.info;
+    editIndexNext = i;
+    document.getElementById('formNextTitle').textContent = 'MODIFICA FILM';
+    document.getElementById('n-save-btn').textContent = 'Salva modifiche';
+    document.getElementById('n-cancel-btn').style.display = 'inline-block';
+    document.getElementById('formProssimamente').scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  function eliminaFilmProssimamente(i){
+    if(confirm(`Eliminare "${prossimamente[i].titolo}" da "Prossimamente"?`)){
+      prossimamente.splice(i, 1);
+      renderListaProssimamente();
+    }
+  }
+
+  function annullaModificaProssimamente(){
+    resetFormProssimamente();
+  }
+
+  function resetFormProssimamente(){
+    editIndexNext = null;
+    document.getElementById('n-titolo').value = '';
+    document.getElementById('n-info').value = '';
+    document.getElementById('formNextTitle').textContent = 'AGGIUNGI FILM (PROSSIMAMENTE)';
+    document.getElementById('n-save-btn').textContent = 'Aggiungi film';
+    document.getElementById('n-cancel-btn').style.display = 'none';
+  }
+
+  function jsStringify(val){
+    return JSON.stringify(val);
+  }
+
+  function generaCodice(){
+    const progLines = programmazione.map(f => {
+      return `  { titolo: ${jsStringify(f.titolo)}, sala: ${jsStringify(f.sala)}, orari: ${jsStringify(f.orari)}, intero: ${jsStringify(f.intero)}, ridotto: ${jsStringify(f.ridotto)}, abbonamento: ${!!f.abbonamento} }`;
+    }).join(',\n');
+
+    const nextLines = prossimamente.map(f => {
+      return `  { titolo: ${jsStringify(f.titolo)}, info: ${jsStringify(f.info)} }`;
+    }).join(',\n');
+
+    const code = `/* ============================================================
+   Dati della programmazione — Cinema Multisala Lumière
+   Questo file viene letto sia da index.html (per mostrare la
+   programmazione) sia da admin.html (per modificarla).
+   Per aggiornare i film: usa admin.html, genera il nuovo codice
+   e sostituisci il contenuto di questo file su GitHub.
+   ============================================================ */
+
+const FILM_PROGRAMMAZIONE = [
+${progLines}
+];
+
+const FILM_PROSSIMAMENTE = [
+${nextLines}
+];
+`;
+    document.getElementById('output').value = code;
+    document.getElementById('copyStatus').textContent = '';
+  }
+
+  async function copiaCodice(){
+    const output = document.getElementById('output');
+    if(!output.value){
+      generaCodice();
+    }
+    try{
+      await navigator.clipboard.writeText(document.getElementById('output').value);
+      document.getElementById('copyStatus').textContent = '✓ Copiato — incollalo ora in data.js su GitHub';
+    }catch(err){
+      output.select();
+      document.getElementById('copyStatus').textContent = 'Seleziona e copia manualmente il testo qui sopra';
+    }
+  }
+
+  renderListaProgrammazione();
+  renderListaProssimamente();
+</script>
+
+</body>
+</html>
