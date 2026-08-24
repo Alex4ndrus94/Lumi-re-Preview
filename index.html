@@ -213,9 +213,52 @@
     border-bottom:1px solid var(--line);
   }
   .programma-info h3{ font-size:1.15rem; font-style:italic; margin-bottom:2px; }
+  .programma-row{ cursor:pointer; transition:background 0.15s ease; }
+  .programma-row:hover{ background:rgba(243,233,221,0.03); }
+  .programma-row .scheda-hint{
+    font-family:'IBM Plex Mono', monospace; font-size:0.68rem; color:var(--muted);
+  }
+  .programma-row:hover .scheda-hint{ color:var(--gold); }
+
+  /* ---------- Scheda film (modale TMDb) ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; z-index:100;
+    background:rgba(10,8,8,0.82);
+    display:none;
+    align-items:flex-start; justify-content:center;
+    padding:40px 16px;
+    overflow-y:auto;
+  }
+  .modal-overlay.open{ display:flex; }
+  .modal-panel{
+    background:var(--panel); border:1px solid var(--line);
+    max-width:480px; width:100%;
+    position:relative;
+  }
+  .modal-close{
+    position:absolute; top:10px; right:10px; z-index:2;
+    width:32px; height:32px; border-radius:50%;
+    background:var(--noir); border:1px solid var(--line);
+    color:var(--cream); font-size:1.1rem;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+  }
+  .modal-close:hover{ border-color:var(--gold); color:var(--gold); }
+  .modal-poster{
+    width:100%; aspect-ratio:2/3; max-height:340px;
+    background:var(--panel-2);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .modal-poster img{ width:100%; height:100%; object-fit:cover; }
+  .modal-poster .placeholder{ font-family:'IBM Plex Mono', monospace; font-size:0.78rem; color:var(--muted); padding:20px; text-align:center; }
+  .modal-body{ padding:20px; }
+  .modal-body h3{ font-size:1.4rem; font-style:italic; margin-bottom:6px; }
+  .modal-tags{ font-family:'IBM Plex Mono', monospace; font-size:0.76rem; color:var(--gold); margin-bottom:14px; }
+  .modal-plot{ color:var(--muted); font-size:0.92rem; line-height:1.55; }
+  .modal-loading{ font-family:'IBM Plex Mono', monospace; font-size:0.82rem; color:var(--muted); }
   .programma-info .tags{ font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--muted); margin-bottom:8px; }
-  .programma-times{ display:flex; flex-wrap:wrap; gap:6px 16px; }
-  .programma-times .slot{
+  .programma-times{ display:flex; flex-wrap:wrap; gap:6px 16px; }  .programma-times .slot{
     font-family:'IBM Plex Mono', monospace; font-size:0.82rem;
     display:flex; gap:6px; align-items:baseline;
   }
@@ -415,9 +458,11 @@
 
   <div class="programma-list">
 
-    <div class="programma-row">
+    <div class="programma-row" onclick="openScheda('Oceania')">
       <div class="programma-info">
-        <h3>Oceania</h3>
+        <h3 data-tmdb-title="Oceania">Oceania</h3>
+        <span class="scheda-hint">Tocca per la scheda ›</span>
+        <div class="tags tmdb-meta">Recupero dati…</div>
         <div class="tags">SALA DE CURTIS</div>
         <div class="programma-times">
           <span class="slot"><span class="time">16:30</span></span>
@@ -429,9 +474,11 @@
       </div>
     </div>
 
-    <div class="programma-row">
+    <div class="programma-row" onclick="openScheda('SpiderMan Brand New Day')">
       <div class="programma-info">
-        <h3>SpiderMan Brand New Day</h3>
+        <h3 data-tmdb-title="SpiderMan Brand New Day">SpiderMan Brand New Day</h3>
+        <span class="scheda-hint">Tocca per la scheda ›</span>
+        <div class="tags tmdb-meta">Recupero dati…</div>
         <div class="tags">SALA SORDI</div>
         <div class="programma-times">
           <span class="slot"><span class="time">18:30</span></span>
@@ -441,9 +488,11 @@
       </div>
     </div>
 
-    <div class="programma-row">
+    <div class="programma-row" onclick="openScheda('Odissea')">
       <div class="programma-info">
-        <h3>Odissea</h3>
+        <h3 data-tmdb-title="Odissea">Odissea</h3>
+        <span class="scheda-hint">Tocca per la scheda ›</span>
+        <div class="tags tmdb-meta">Recupero dati…</div>
         <div class="tags">SALA BERGMAN</div>
         <div class="programma-times">
           <span class="slot"><span class="time">18:00</span></span>
@@ -453,9 +502,11 @@
       </div>
     </div>
 
-    <div class="programma-row">
+    <div class="programma-row" onclick="openScheda('Insidious: Fuori dal Altrove')">
       <div class="programma-info">
-        <h3>Insidious: Fuori dal Altrove</h3>
+        <h3 data-tmdb-title="Insidious: Fuori dal Altrove">Insidious: Fuori dal Altrove</h3>
+        <span class="scheda-hint">Tocca per la scheda ›</span>
+        <div class="tags tmdb-meta">Recupero dati…</div>
         <div class="tags">SALA VIRNA LISI</div>
         <div class="programma-times">
           <span class="slot"><span class="time">18:45</span></span>
@@ -466,9 +517,11 @@
       </div>
     </div>
 
-    <div class="programma-row">
+    <div class="programma-row" onclick="openScheda('Minions')">
       <div class="programma-info">
-        <h3>Minions</h3>
+        <h3 data-tmdb-title="Minions">Minions</h3>
+        <span class="scheda-hint">Tocca per la scheda ›</span>
+        <div class="tags tmdb-meta">Recupero dati…</div>
         <div class="tags">SALA DE SICA</div>
         <div class="programma-times">
           <span class="slot"><span class="time">18:30</span></span>
@@ -477,9 +530,11 @@
       </div>
     </div>
 
-    <div class="programma-row">
+    <div class="programma-row" onclick="openScheda('The Death of Robin Hood')">
       <div class="programma-info">
-        <h3>The Death of Robin Hood</h3>
+        <h3 data-tmdb-title="The Death of Robin Hood">The Death of Robin Hood</h3>
+        <span class="scheda-hint">Tocca per la scheda ›</span>
+        <div class="tags tmdb-meta">Recupero dati…</div>
         <div class="tags">SALA DE SICA</div>
         <div class="programma-times">
           <span class="slot"><span class="time">20:15</span></span>
@@ -488,9 +543,11 @@
       </div>
     </div>
 
-    <div class="programma-row">
+    <div class="programma-row" onclick="openScheda('Camp Niasma')">
       <div class="programma-info">
-        <h3>Camp Niasma</h3>
+        <h3 data-tmdb-title="Camp Niasma">Camp Niasma</h3>
+        <span class="scheda-hint">Tocca per la scheda ›</span>
+        <div class="tags tmdb-meta">Recupero dati…</div>
         <div class="tags">SALA DE SICA</div>
         <div class="programma-times">
           <span class="slot"><span class="time">22:15</span></span>
@@ -499,9 +556,11 @@
       </div>
     </div>
 
-    <div class="programma-row">
+    <div class="programma-row" onclick="openScheda('La Fine di Oak Street')">
       <div class="programma-info">
-        <h3>La Fine di Oak Street</h3>
+        <h3 data-tmdb-title="La Fine di Oak Street">La Fine di Oak Street</h3>
+        <span class="scheda-hint">Tocca per la scheda ›</span>
+        <div class="tags tmdb-meta">Recupero dati…</div>
         <div class="tags">SALA MASTROIANNI</div>
         <div class="programma-times">
           <span class="slot"><span class="time">18:35</span></span>
@@ -511,9 +570,11 @@
       </div>
     </div>
 
-    <div class="programma-row">
+    <div class="programma-row" onclick="openScheda('Hokum')">
       <div class="programma-info">
-        <h3>Hokum</h3>
+        <h3 data-tmdb-title="Hokum">Hokum</h3>
+        <span class="scheda-hint">Tocca per la scheda ›</span>
+        <div class="tags tmdb-meta">Recupero dati…</div>
         <div class="tags">SALA MASTROIANNI</div>
         <div class="programma-times">
           <span class="slot"><span class="time">22:15</span></span>
@@ -672,6 +733,22 @@
   </div>
 </footer>
 
+<div class="modal-overlay" id="schedaOverlay" onclick="if(event.target===this) closeScheda()">
+  <div class="modal-panel">
+    <button class="modal-close" aria-label="Chiudi" onclick="closeScheda()">✕</button>
+    <div class="modal-poster" id="schedaPoster">
+      <span class="placeholder">Caricamento locandina…</span>
+    </div>
+    <div class="modal-body">
+      <h3 id="schedaTitle">—</h3>
+      <div class="modal-tags" id="schedaTags"></div>
+      <p class="modal-plot" id="schedaPlot">
+        <span class="modal-loading">Recupero dati da TMDb…</span>
+      </p>
+    </div>
+  </div>
+</div>
+
 <script>
   const slides = document.querySelectorAll('.slide');
   const dots = document.querySelectorAll('.slider-dots button');
@@ -695,6 +772,111 @@
       tab.classList.add('active');
     });
   });
+
+  /* ---------- Dati film da TMDb (The Movie Database) — API gratuita ----------
+     Autenticazione con token v4 (Bearer) — già configurato con il tuo token.
+  */
+  const TMDB_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiZTI5MjFhZDVjNWQ3Y2I2MmRhZWZhODkxZmJhMGU3NSIsIm5iZiI6MTc4NTgwMTc1NC41NzMsInN1YiI6IjZhNzEyYzFhYTI5NDNhNjQxNjFhZGQ3ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vgVydRLni399q7JB2zKn6LJGdtKgVE_LLwuoKZ9RLhs';
+  const TMDB_HEADERS = { 'Authorization': `Bearer ${TMDB_TOKEN}`, 'accept': 'application/json' };
+
+  const TMDB_GENRES = {
+    28:'Azione', 12:'Avventura', 16:'Animazione', 35:'Commedia', 80:'Crime',
+    99:'Documentario', 18:'Drammatico', 10751:'Family', 14:'Fantasy',
+    36:'Storico', 27:'Horror', 10402:'Musical', 9648:'Mistero',
+    10749:'Romantico', 878:'Fantascienza', 10770:'TV Movie', 53:'Thriller',
+    10752:'Guerra', 37:'Western'
+  };
+
+  async function loadTmdbData(){
+    if(!TMDB_TOKEN) return;
+    const rows = document.querySelectorAll('[data-tmdb-title]');
+    for(const el of rows){
+      const title = el.dataset.tmdbTitle;
+      const metaEl = el.parentElement.querySelector('.tmdb-meta');
+      try{
+        const searchUrl = `https://api.themoviedb.org/3/search/movie?language=it-IT&query=${encodeURIComponent(title)}`;
+        const searchRes = await fetch(searchUrl, { headers: TMDB_HEADERS });
+        const searchData = await searchRes.json();
+        const movie = searchData.results && searchData.results[0];
+        if(!movie){ if(metaEl) metaEl.textContent = 'Dati non trovati su TMDb'; continue; }
+
+        const detailUrl = `https://api.themoviedb.org/3/movie/${movie.id}?language=it-IT`;
+        const detailRes = await fetch(detailUrl, { headers: TMDB_HEADERS });
+        const detail = await detailRes.json();
+
+        const genres = (detail.genres || []).map(g => g.name).join(', ')
+          || (movie.genre_ids || []).map(id => TMDB_GENRES[id]).filter(Boolean).join(', ');
+        const runtime = detail.runtime ? `${detail.runtime}'` : '';
+
+        if(metaEl){
+          metaEl.textContent = [genres, runtime].filter(Boolean).join(' · ');
+        }
+      }catch(err){
+        console.warn('TMDb: errore nel recupero dati per', title, err);
+        if(metaEl) metaEl.textContent = '';
+      }
+    }
+  }
+  loadTmdbData();
+
+  /* ---------- Scheda film (click su una riga) ---------- */
+  const schedaOverlay = document.getElementById('schedaOverlay');
+  const schedaPoster = document.getElementById('schedaPoster');
+  const schedaTitle = document.getElementById('schedaTitle');
+  const schedaTags = document.getElementById('schedaTags');
+  const schedaPlot = document.getElementById('schedaPlot');
+
+  function closeScheda(){
+    schedaOverlay.classList.remove('open');
+  }
+
+  async function openScheda(title){
+    schedaOverlay.classList.add('open');
+    schedaTitle.textContent = title;
+    schedaTags.textContent = '';
+    schedaPoster.innerHTML = '<span class="placeholder">Caricamento locandina…</span>';
+    schedaPlot.innerHTML = '<span class="modal-loading">Recupero dati da TMDb…</span>';
+
+    if(!TMDB_TOKEN){
+      schedaPoster.innerHTML = '<span class="placeholder">Nessuna API key TMDb configurata (demo)</span>';
+      schedaPlot.textContent = 'Per vedere qui locandina e trama reali, aggiungi la tua API key gratuita di TMDb nel codice del sito.';
+      return;
+    }
+
+    try{
+      const searchUrl = `https://api.themoviedb.org/3/search/movie?language=it-IT&query=${encodeURIComponent(title)}`;
+      const searchRes = await fetch(searchUrl, { headers: TMDB_HEADERS });
+      const searchData = await searchRes.json();
+      const movie = searchData.results && searchData.results[0];
+
+      if(!movie){
+        schedaPoster.innerHTML = '<span class="placeholder">Locandina non trovata</span>';
+        schedaPlot.textContent = 'Nessun dato disponibile su TMDb per questo titolo.';
+        return;
+      }
+
+      const detailUrl = `https://api.themoviedb.org/3/movie/${movie.id}?language=it-IT`;
+      const detailRes = await fetch(detailUrl, { headers: TMDB_HEADERS });
+      const detail = await detailRes.json();
+
+      const genres = (detail.genres || []).map(g => g.name).join(', ')
+        || (movie.genre_ids || []).map(id => TMDB_GENRES[id]).filter(Boolean).join(', ');
+      const runtime = detail.runtime ? `${detail.runtime}'` : '';
+      schedaTags.textContent = [genres, runtime].filter(Boolean).join(' · ');
+
+      if(movie.poster_path){
+        schedaPoster.innerHTML = `<img src="https://image.tmdb.org/t/p/w342${movie.poster_path}" alt="Locandina di ${title}">`;
+      }else{
+        schedaPoster.innerHTML = '<span class="placeholder">Locandina non disponibile</span>';
+      }
+
+      schedaPlot.textContent = detail.overview || movie.overview || 'Trama non disponibile.';
+    }catch(err){
+      console.warn('TMDb: errore nel recupero scheda per', title, err);
+      schedaPoster.innerHTML = '<span class="placeholder">Errore nel recupero dati</span>';
+      schedaPlot.textContent = 'Si è verificato un errore durante il recupero dei dati da TMDb.';
+    }
+  }
 </script>
 
 </body>
