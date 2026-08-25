@@ -96,6 +96,30 @@
   .empty-note{ font-family:'IBM Plex Mono', monospace; font-size:0.8rem; color:var(--muted); padding:10px 0; }
   a.back{ font-family:'IBM Plex Mono', monospace; font-size:0.76rem; color:var(--muted); display:inline-block; margin-top:6px; }
   a.back:hover{ color:var(--gold); }
+
+  .title-field{ position:relative; }
+  .suggestions{
+    position:absolute; top:100%; left:0; right:0; z-index:20;
+    background:var(--noir); border:1px solid var(--line); border-top:none;
+    max-height:260px; overflow-y:auto; display:none;
+  }
+  .suggestions.open{ display:block; }
+  .suggestion-item{
+    display:flex; gap:10px; align-items:center; padding:9px 12px; cursor:pointer;
+    border-bottom:1px solid var(--line);
+  }
+  .suggestion-item:last-child{ border-bottom:none; }
+  .suggestion-item:hover, .suggestion-item.active{ background:rgba(226,114,108,0.08); }
+  .suggestion-item .sug-thumb{
+    width:30px; height:44px; flex:0 0 auto; background:var(--panel); border:1px solid var(--line);
+    background-size:cover; background-position:center;
+  }
+  .suggestion-item .sug-text{ min-width:0; }
+  .suggestion-item .sug-title{ font-size:0.88rem; color:var(--cream); }
+  .suggestion-item .sug-year{ font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--muted); }
+  .suggestion-status{
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; color:var(--muted); padding:8px 12px;
+  }
 </style>
 </head>
 <body>
@@ -121,7 +145,10 @@
     <div class="form-card" id="formProgrammazione">
       <h3 id="formProgTitle">AGGIUNGI FILM</h3>
       <label>Titolo film</label>
-      <input type="text" id="p-titolo" placeholder="Es. Oceania">
+      <div class="title-field">
+        <input type="text" id="p-titolo" placeholder="Es. Oceania" autocomplete="off" oninput="onTitoloInput('p-titolo','p-suggestions')" onblur="scheduleHideSuggestions('p-suggestions')">
+        <div class="suggestions" id="p-suggestions"></div>
+      </div>
 
       <label>Sala</label>
       <select id="p-sala">
@@ -168,7 +195,10 @@
     <div class="form-card" id="formProssimamente">
       <h3 id="formNextTitle">AGGIUNGI FILM (PROSSIMAMENTE)</h3>
       <label>Titolo film</label>
-      <input type="text" id="n-titolo" placeholder="Es. Anno del Vento">
+      <div class="title-field">
+        <input type="text" id="n-titolo" placeholder="Es. Anno del Vento" autocomplete="off" oninput="onTitoloInput('n-titolo','n-suggestions')" onblur="scheduleHideSuggestions('n-suggestions')">
+        <div class="suggestions" id="n-suggestions"></div>
+      </div>
 
       <label>Info (genere · data d'uscita)</label>
       <input type="text" id="n-info" placeholder="Es. DRAMMATICO · dal 5 settembre">
@@ -207,6 +237,88 @@
 
   let editIndexProg = null;
   let editIndexNext = null;
+
+  /* ---------- Suggerimenti titolo da TMDb (stessa autenticazione usata in index.html) ---------- */
+  const TMDB_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiZTI5MjFhZDVjNWQ3Y2I2MmRhZWZhODkxZmJhMGU3NSIsIm5iZiI6MTc4NTgwMTc1NC41NzMsInN1YiI6IjZhNzEyYzFhYTI5NDNhNjQxNjFhZGQ3ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.vgVydRLni399q7JB2zKn6LJGdtKgVE_LLwuoKZ9RLhs';
+  const TMDB_HEADERS = { 'Authorization': `Bearer ${TMDB_TOKEN}`, 'accept': 'application/json' };
+
+  let suggestDebounce = null;
+  let suggestAbort = null;
+
+  function onTitoloInput(inputId, boxId){
+    const input = document.getElementById(inputId);
+    const box = document.getElementById(boxId);
+    const query = input.value.trim();
+
+    clearTimeout(suggestDebounce);
+    if(!query){
+      box.classList.remove('open');
+      box.innerHTML = '';
+      return;
+    }
+    if(!TMDB_TOKEN){
+      box.innerHTML = '<div class="suggestion-status">Nessuna API key TMDb configurata</div>';
+      box.classList.add('open');
+      return;
+    }
+
+    suggestDebounce = setTimeout(() => cercaSuggerimenti(query, inputId, boxId), 350);
+  }
+
+  async function cercaSuggerimenti(query, inputId, boxId){
+    const box = document.getElementById(boxId);
+    box.innerHTML = '<div class="suggestion-status">Ricerca in corso…</div>';
+    box.classList.add('open');
+
+    if(suggestAbort) suggestAbort.abort();
+    suggestAbort = new AbortController();
+
+    try{
+      const url = `https://api.themoviedb.org/3/search/movie?language=it-IT&query=${encodeURIComponent(query)}`;
+      const res = await fetch(url, { headers: TMDB_HEADERS, signal: suggestAbort.signal });
+      const data = await res.json();
+      const results = (data.results || []).slice(0, 6);
+
+      if(!results.length){
+        box.innerHTML = '<div class="suggestion-status">Nessun titolo trovato su TMDb</div>';
+        return;
+      }
+
+      box.innerHTML = results.map(m => {
+        const year = m.release_date ? m.release_date.slice(0,4) : '';
+        const thumbStyle = m.poster_path ? `style="background-image:url(https://image.tmdb.org/t/p/w92${m.poster_path})"` : '';
+        const safeTitle = m.title.replace(/'/g, "\\'");
+        return `
+        <div class="suggestion-item" onmousedown="selezionaSuggerimento('${safeTitle}', '${inputId}', '${boxId}')">
+          <div class="sug-thumb" ${thumbStyle}></div>
+          <div class="sug-text">
+            <div class="sug-title">${m.title}</div>
+            <div class="sug-year">${year}</div>
+          </div>
+        </div>`;
+      }).join('');
+    }catch(err){
+      if(err.name !== 'AbortError'){
+        box.innerHTML = '<div class="suggestion-status">Errore nella ricerca — controlla la connessione</div>';
+      }
+    }
+  }
+
+  function selezionaSuggerimento(titolo, inputId, boxId){
+    document.getElementById(inputId).value = titolo;
+    nascondiSuggerimenti(boxId);
+  }
+
+  function nascondiSuggerimenti(boxId){
+    const box = document.getElementById(boxId);
+    box.classList.remove('open');
+    box.innerHTML = '';
+  }
+
+  function scheduleHideSuggestions(boxId){
+    // ritardo per permettere al click (onmousedown) sul suggerimento di registrarsi prima del blur
+    setTimeout(() => nascondiSuggerimenti(boxId), 150);
+  }
 
   function renderListaProgrammazione(){
     const container = document.getElementById('listaProgrammazione');
